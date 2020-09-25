@@ -7,12 +7,11 @@ import (
 	"context"
 
 	"github.com/99designs/gqlgen/graphql"
+	"github.com/elsagg/graphapis/internal/authors/graph/generated"
+	"github.com/elsagg/graphapis/internal/authors/graph/model"
+	"github.com/elsagg/graphapis/pkg/events"
+	"github.com/satori/go.uuid"
 	"github.com/vektah/gqlparser/v2/gqlerror"
-
-	"github.com/elsagg/authors/internal/graph/generated"
-	"github.com/elsagg/authors/internal/graph/model"
-	"github.com/elsagg/authors/pkg/events"
-	uuid "github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

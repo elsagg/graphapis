@@ -3,7 +3,7 @@ package graph
 import (
 	"context"
 
-	"github.com/elsagg/authors/pkg/data"
+	"github.com/elsagg/graphapis/pkg/data"
 )
 
 // This file will not be regenerated automatically.

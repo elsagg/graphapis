@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/99designs/gqlgen/plugin/federation/fedruntime"
-	"github.com/elsagg/authors/internal/graph/model"
+	"github.com/elsagg/graphapis/internal/authors/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -271,7 +271,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "internal/graph/schema.graphqls", Input: `# GraphQL schema example
+	{Name: "graph/schema.graphqls", Input: `# GraphQL schema example
 #
 # https://gqlgen.com/getting-started/
 
@@ -356,7 +356,7 @@ func (ec *executionContext) field_Mutation_createAuthor_args(ctx context.Context
 	var arg0 model.NewAuthor
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewAuthor2githubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐNewAuthor(ctx, tmp)
+		arg0, err = ec.unmarshalNNewAuthor2githubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐNewAuthor(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -547,7 +547,7 @@ func (ec *executionContext) _Author_books(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]*model.Book)
 	fc.Result = res
-	return ec.marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐBook(ctx, field.Selections, res)
+	return ec.marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐBook(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Book_id(ctx context.Context, field graphql.CollectedField, obj *model.Book) (ret graphql.Marshaler) {
@@ -659,7 +659,7 @@ func (ec *executionContext) _Entity_findAuthorByID(ctx context.Context, field gr
 	}
 	res := resTmp.(*model.Author)
 	fc.Result = res
-	return ec.marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
+	return ec.marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createAuthor(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -701,7 +701,7 @@ func (ec *executionContext) _Mutation_createAuthor(ctx context.Context, field gr
 	}
 	res := resTmp.(*model.Author)
 	fc.Result = res
-	return ec.marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
+	return ec.marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_authors(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -733,7 +733,7 @@ func (ec *executionContext) _Query_authors(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.([]*model.Author)
 	fc.Result = res
-	return ec.marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
+	return ec.marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_author(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -772,7 +772,7 @@ func (ec *executionContext) _Query_author(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.Author)
 	fc.Result = res
-	return ec.marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
+	return ec.marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query__entities(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2587,11 +2587,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNAuthor2githubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v model.Author) graphql.Marshaler {
+func (ec *executionContext) marshalNAuthor2githubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v model.Author) graphql.Marshaler {
 	return ec._Author(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v *model.Author) graphql.Marshaler {
+func (ec *executionContext) marshalNAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v *model.Author) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2631,7 +2631,7 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewAuthor2githubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐNewAuthor(ctx context.Context, v interface{}) (model.NewAuthor, error) {
+func (ec *executionContext) unmarshalNNewAuthor2githubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐNewAuthor(ctx context.Context, v interface{}) (model.NewAuthor, error) {
 	res, err := ec.unmarshalInputNewAuthor(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -2987,7 +2987,7 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v []*model.Author) graphql.Marshaler {
+func (ec *executionContext) marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v []*model.Author) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3014,7 +3014,7 @@ func (ec *executionContext) marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋauthors
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx, sel, v[i])
+			ret[i] = ec.marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3027,14 +3027,14 @@ func (ec *executionContext) marshalOAuthor2ᚕᚖgithubᚗcomᚋelsaggᚋauthors
 	return ret
 }
 
-func (ec *executionContext) marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v *model.Author) graphql.Marshaler {
+func (ec *executionContext) marshalOAuthor2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐAuthor(ctx context.Context, sel ast.SelectionSet, v *model.Author) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Author(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐBook(ctx context.Context, sel ast.SelectionSet, v []*model.Book) graphql.Marshaler {
+func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐBook(ctx context.Context, sel ast.SelectionSet, v []*model.Book) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -3061,7 +3061,7 @@ func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋauthors�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOBook2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐBook(ctx, sel, v[i])
+			ret[i] = ec.marshalOBook2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐBook(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3074,7 +3074,7 @@ func (ec *executionContext) marshalOBook2ᚕᚖgithubᚗcomᚋelsaggᚋauthors�
 	return ret
 }
 
-func (ec *executionContext) marshalOBook2ᚖgithubᚗcomᚋelsaggᚋauthorsᚋinternalᚋgraphᚋmodelᚐBook(ctx context.Context, sel ast.SelectionSet, v *model.Book) graphql.Marshaler {
+func (ec *executionContext) marshalOBook2ᚖgithubᚗcomᚋelsaggᚋgraphapisᚋinternalᚋauthorsᚋgraphᚋmodelᚐBook(ctx context.Context, sel ast.SelectionSet, v *model.Book) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

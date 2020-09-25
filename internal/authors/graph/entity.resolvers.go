@@ -6,8 +6,8 @@ package graph
 import (
 	"context"
 
-	"github.com/elsagg/authors/internal/graph/generated"
-	"github.com/elsagg/authors/internal/graph/model"
+	"github.com/elsagg/graphapis/internal/authors/graph/generated"
+	"github.com/elsagg/graphapis/internal/authors/graph/model"
 )
 
 func (r *entityResolver) FindAuthorByID(ctx context.Context, id string) (*model.Author, error) {
