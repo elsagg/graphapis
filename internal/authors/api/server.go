@@ -10,8 +10,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/elsagg/authors/internal/graph"
-	"github.com/elsagg/authors/internal/graph/generated"
+	"github.com/elsagg/graphapis/internal/authors/graph"
+	"github.com/elsagg/graphapis/internal/authors/graph/generated"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
