@@ -1,0 +1,28 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Author @key(fields: "id") {
+  id: ID!
+  name: String!
+  books: [Book] @provides(fields: "authorId")
+}
+
+input NewAuthor {
+  id: ID!
+  name: String!
+}
+
+extend type Book @key(fields: "id") {
+  id: ID! @external
+  authorId: ID! @external 
+}
+
+extend type Query {
+  authors: [Author]
+  author(id: ID!): Author
+}
+
+extend type Mutation {
+  createAuthor(input: NewAuthor!): Author!
+}
