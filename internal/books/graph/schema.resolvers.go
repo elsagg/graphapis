@@ -5,23 +5,17 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	"github.com/elsagg/books/graph/model"
-	generated1 "github.com/elsagg/graphapis/internal/books/graph/generated"
-	model1 "github.com/elsagg/graphapis/internal/books/graph/model"
+	"github.com/elsagg/graphapis/internal/books/graph/generated"
+	"github.com/elsagg/graphapis/internal/books/graph/model"
 	"github.com/elsagg/graphapis/pkg/events"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (r *authorResolver) Name(ctx context.Context, obj *model1.Author) (*string, error) {
-	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *mutationResolver) CreateBook(ctx context.Context, input model1.NewBook) (*model1.Book, error) {
+func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) (*model.Book, error) {
 	newBook := &model.Book{
 		ID:       input.ID,
 		Title:    input.Title,
@@ -56,10 +50,10 @@ func (r *mutationResolver) CreateBook(ctx context.Context, input model1.NewBook)
 	return newBook, nil
 }
 
-func (r *queryResolver) Books(ctx context.Context) ([]*model1.Book, error) {
+func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
 	var books []*model.Book
 
-	repository, err := r.Repository("elsagg", "authors")
+	repository, err := r.Repository("elsagg", "books")
 
 	if err != nil {
 		return nil, err
@@ -80,7 +74,7 @@ func (r *queryResolver) Books(ctx context.Context) ([]*model1.Book, error) {
 	return books, nil
 }
 
-func (r *queryResolver) Book(ctx context.Context, id string) (*model1.Book, error) {
+func (r *queryResolver) Book(ctx context.Context, id string) (*model.Book, error) {
 	var book *model.Book
 
 	repository, err := r.Repository("elsagg", "books")
@@ -104,15 +98,11 @@ func (r *queryResolver) Book(ctx context.Context, id string) (*model1.Book, erro
 	return book, nil
 }
 
-// Author returns generated1.AuthorResolver implementation.
-func (r *Resolver) Author() generated1.AuthorResolver { return &authorResolver{r} }
+// Mutation returns generated.MutationResolver implementation.
+func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
-// Mutation returns generated1.MutationResolver implementation.
-func (r *Resolver) Mutation() generated1.MutationResolver { return &mutationResolver{r} }
+// Query returns generated.QueryResolver implementation.
+func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-// Query returns generated1.QueryResolver implementation.
-func (r *Resolver) Query() generated1.QueryResolver { return &queryResolver{r} }
-
-type authorResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

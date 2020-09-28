@@ -6,15 +6,14 @@ package graph
 import (
 	"context"
 
-	"github.com/elsagg/books/graph/model"
-	generated1 "github.com/elsagg/graphapis/internal/books/graph/generated"
-	model1 "github.com/elsagg/graphapis/internal/books/graph/model"
+	"github.com/elsagg/graphapis/internal/books/graph/generated"
+	"github.com/elsagg/graphapis/internal/books/graph/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (r *entityResolver) FindBookByID(ctx context.Context, id string) (*model1.Book, error) {
+func (r *entityResolver) FindBookByID(ctx context.Context, id string) (*model.Book, error) {
 	var book *model.Book
 
 	repository, err := r.Repository("elsagg", "books")
@@ -38,7 +37,7 @@ func (r *entityResolver) FindBookByID(ctx context.Context, id string) (*model1.B
 	return book, nil
 }
 
-// Entity returns generated1.EntityResolver implementation.
-func (r *Resolver) Entity() generated1.EntityResolver { return &entityResolver{r} }
+// Entity returns generated.EntityResolver implementation.
+func (r *Resolver) Entity() generated.EntityResolver { return &entityResolver{r} }
 
 type entityResolver struct{ *Resolver }

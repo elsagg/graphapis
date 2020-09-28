@@ -15,5 +15,3 @@ require (
 )
 
 replace github.com/elsagg/graphapis/pkg => ../../pkg
-
-replace github.com/elsagg/graphapis/internal/books => ./

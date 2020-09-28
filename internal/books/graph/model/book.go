@@ -7,6 +7,7 @@ import (
 
 	"github.com/elsagg/graphapis/pkg/data"
 	"github.com/elsagg/graphapis/pkg/events"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -37,7 +38,7 @@ func (b *Book) Author() (*Author, error) {
 	}
 
 	if err = result.(*mongo.SingleResult).Decode(&author); err != nil {
-		panic(err)
+		log.Error().Err(err).Msg(err.Error())
 	}
 
 	return author, nil

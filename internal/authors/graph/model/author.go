@@ -5,6 +5,7 @@ import (
 
 	"github.com/elsagg/graphapis/pkg/data"
 	"github.com/elsagg/graphapis/pkg/events"
+	"github.com/rs/zerolog/log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,7 +38,7 @@ func (a *Author) Books() ([]*Book, error) {
 	cursor := res.(*mongo.Cursor)
 
 	if err = cursor.All(context.TODO(), &books); err != nil {
-		panic(err)
+		log.Error().Err(err).Msg(err.Error())
 	}
 
 	return books, nil

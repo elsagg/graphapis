@@ -19,7 +19,7 @@ input NewBook {
 
 extend type Author @key(fields: "id") {
   id: ID! @external
-  name: String @external
+  name: String! @external
 }
 
 extend type Query {

@@ -37,7 +37,6 @@ type Config struct {
 }
 
 type ResolverRoot interface {
-	Author() AuthorResolver
 	Entity() EntityResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
@@ -80,9 +79,6 @@ type ComplexityRoot struct {
 	}
 }
 
-type AuthorResolver interface {
-	Name(ctx context.Context, obj *model.Author) (*string, error)
-}
 type EntityResolver interface {
 	FindBookByID(ctx context.Context, id string) (*model.Book, error)
 }
@@ -312,7 +308,7 @@ input NewBook {
 
 extend type Author @key(fields: "id") {
   id: ID! @external
-  name: String @external
+  name: String! @external
 }
 
 extend type Query {
@@ -518,25 +514,28 @@ func (ec *executionContext) _Author_name(ctx context.Context, field graphql.Coll
 		Object:     "Author",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Author().Name(rctx, obj)
+		return obj.Name, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Book_id(ctx context.Context, field graphql.CollectedField, obj *model.Book) (ret graphql.Marshaler) {
@@ -2222,19 +2221,13 @@ func (ec *executionContext) _Author(ctx context.Context, sel ast.SelectionSet, o
 		case "id":
 			out.Values[i] = ec._Author_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Author_name(ctx, field, obj)
-				return res
-			})
+			out.Values[i] = ec._Author_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
