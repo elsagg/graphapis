@@ -5,12 +5,12 @@ package graph
 
 import (
 	"context"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/elsagg/graphapis/internal/authors/graph/generated"
 	"github.com/elsagg/graphapis/internal/authors/graph/model"
-	"github.com/elsagg/graphapis/pkg/events"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -25,7 +25,31 @@ func (r *mutationResolver) CreateAuthor(ctx context.Context, input model.NewAuth
 		Name: input.Name,
 	}
 
-	event, err := events.NewEvent(ctx, "authors")
+	err := newAuthor.CreateEvent(ctx, &events.EventMetadata{
+		EventType:        "gg.elsa.authors.CreateAuthor",
+		EventSource:      "authors/mutation/CreateAuthor",
+		EventKey:         newAuthor.ID,
+		EventDestination: "authors",
+		EventTime:        time.Now(),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = newAuthor.Event.SetData(newAuthor)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = newAuthor.Event.Send()
+
+	if err != nil {
+		return nil, err
+	}
+
+	/* event, err := events.NewEvent(ctx, "authors")
 
 	if err != nil {
 		return nil, err
@@ -44,7 +68,7 @@ func (r *mutationResolver) CreateAuthor(ctx context.Context, input model.NewAuth
 
 	if err != nil {
 		return nil, err
-	}
+	} */
 
 	return newAuthor, nil
 }
