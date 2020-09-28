@@ -10,8 +10,7 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
-type Resolver struct {
-}
+type Resolver struct{}
 
 func (r *Resolver) Repository(database string, collection string) (data.Repository, error) {
 	repo, err := data.NewDataViewerMongo(context.TODO(), database, collection)

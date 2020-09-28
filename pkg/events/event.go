@@ -7,6 +7,7 @@ import (
 	"github.com/cloudevents/sdk-go/protocol/kafka_sarama/v2"
 	cloudevents "github.com/cloudevents/sdk-go/v2"
 	"github.com/cloudevents/sdk-go/v2/protocol"
+	"github.com/rs/zerolog/log"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -19,6 +20,7 @@ type EventData struct {
 }
 
 func (e *EventData) CreateEvent(ctx context.Context, metadata *EventMetadata) error {
+	var ev *Event
 	ev, err := NewEvent(ctx, metadata)
 
 	if err != nil {
@@ -33,21 +35,6 @@ func (e *EventData) CreateEvent(ctx context.Context, metadata *EventMetadata) er
 	e.EventSource = ev.Source()
 
 	return nil
-}
-
-func (e *EventData) SetEvent(ev *Event) {
-	e.Event = ev
-
-	e.EventID = ev.ID()
-	e.EventType = ev.Type()
-	e.EventTime = ev.Time()
-	e.EventSource = ev.Source()
-}
-
-func (e *EventData) AutoFill(e2 *Event) {
-	e.EventID = e2.ID()
-	e.EventType = e2.Type()
-	e.EventSource = e2.Source()
 }
 
 type EventMetadata struct {
@@ -66,6 +53,14 @@ type Event struct {
 	sender      *kafka_sarama.Sender
 	ctx         context.Context
 	sendResult  protocol.Result
+}
+
+func (e *Event) SetEventID(id string) {
+	e.SetID(id)
+}
+
+func (e *Event) SetContext(ctx context.Context) {
+	e.ctx = ctx
 }
 
 func (e *Event) Destination() string {
@@ -89,26 +84,37 @@ func (e *Event) SetEventData(data interface{}) error {
 }
 
 func NewEvent(ctx context.Context, metadata *EventMetadata) (*Event, error) {
+	var e *Event
+
 	eventId := uuid.NewV4()
 
-	e := Event{
-		ctx: ctx,
-	}
+	log.Info().Msg(eventId.String())
 
-	e.SetID(eventId.String())
+	idStr := eventId.String()
+
+	e = &Event{}
+
+	e.SetSpecVersion(cloudevents.VersionV1)
+
+	e.SetContext(ctx)
+	e.SetID(idStr)
 	e.SetType(metadata.EventType)
 	e.SetSource(metadata.EventSource)
 	e.SetTime(metadata.EventTime)
 	e.SetKey(metadata.EventKey)
 	e.SetDestination(metadata.EventDestination)
 
-	e.SetSpecVersion(cloudevents.VersionV1)
-
-	err := e.BuildSender()
+	err := e.Validate()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &e, nil
+	err = e.BuildSender()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }

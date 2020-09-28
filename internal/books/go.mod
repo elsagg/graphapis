@@ -1,4 +1,4 @@
-module github.com/elsagg/graphapis/internal/authors
+module github.com/elsagg/graphapis/internal/books
 
 go 1.15
 
@@ -15,3 +15,5 @@ require (
 )
 
 replace github.com/elsagg/graphapis/pkg => ../../pkg
+
+replace github.com/elsagg/graphapis/internal/books => ./

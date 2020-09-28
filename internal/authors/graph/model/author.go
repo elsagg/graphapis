@@ -21,6 +21,7 @@ func (a *Author) Books() ([]*Book, error) {
 	var books []*Book
 
 	repo, err := data.NewDataViewerMongo(context.TODO(), "elsagg", "books")
+
 	if err != nil {
 		return nil, err
 	}
@@ -43,30 +44,6 @@ func (a *Author) Books() ([]*Book, error) {
 }
 
 func (Author) IsEntity() {}
-
-/* func (a *Author) Books() ([]*Book, error) {
-	var books []*Book
-
-	conn, err := database.GetConnection()
-
-	if err != nil {
-		return nil, err
-	}
-
-	repository := conn.Database("elsagg").Collection("books")
-
-	cursor, err := repository.Find(context.TODO(), bson.D{{"authorId", a.ID}}, options.Find().SetSort(bson.D{{"year", 1}}))
-
-	if err != nil {
-		return nil, err
-	}
-
-	if err = cursor.All(context.TODO(), &books); err != nil {
-		panic(err)
-	}
-
-	return books, nil
-} */
 
 type NewAuthor struct {
 	ID   string `json:"id"`
