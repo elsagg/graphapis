@@ -24,10 +24,10 @@ func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) 
 	}
 
 	err := newBook.CreateEvent(ctx, &events.EventMetadata{
-		EventType:        "gg.elsa.authors.CreateAuthor",
-		EventSource:      "authors/mutation/CreateAuthor",
+		EventType:        "gg.elsa.books.CreateBok",
+		EventSource:      "books/mutation/CreateBok",
 		EventKey:         newBook.ID,
-		EventDestination: "authors",
+		EventDestination: "books",
 		EventTime:        time.Now(),
 	})
 
