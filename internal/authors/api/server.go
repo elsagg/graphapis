@@ -12,6 +12,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/elsagg/graphapis/internal/authors/graph"
 	"github.com/elsagg/graphapis/internal/authors/graph/generated"
+	"github.com/elsagg/graphapis/pkg/auth"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
@@ -76,6 +77,8 @@ func main() {
 	r.Use(logger.SetLogger())
 
 	r.Use(GinContextToContextMiddleware())
+
+	r.Use(auth.AuthMiddleware())
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
