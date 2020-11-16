@@ -1,7 +1,9 @@
 package events
 
 import (
+	"crypto/tls"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -16,16 +18,25 @@ func (e *Event) BuildSender() error {
 	kafkaPassword := os.Getenv("KAFKA_PASSWORD")
 	brokers := strings.Split(brokerList, ",")
 
+	fmt.Println(brokers)
+	fmt.Println(kafkaUser)
+	fmt.Println(kafkaPassword)
+
 	saramaConfig := sarama.NewConfig()
 	saramaConfig.Version = sarama.V2_0_0_0
-	saramaConfig.ClientID = "sasl_scram_client"
+	saramaConfig.Producer.RequiredAcks = sarama.WaitForAll
+	saramaConfig.Producer.Return.Successes = true
 	saramaConfig.Net.SASL.Enable = true
-	saramaConfig.Net.SASL.Mechanism = "PLAIN"
+	saramaConfig.Net.SASL.Mechanism = sarama.SASLTypePlaintext
 	saramaConfig.Net.SASL.User = kafkaUser
 	saramaConfig.Net.SASL.Password = kafkaPassword
 	saramaConfig.Net.SASL.Handshake = true
+	saramaConfig.Net.TLS.Enable = true
+	saramaConfig.Net.TLS.Config = &tls.Config{}
+
 	sender, err := kafka_sarama.NewSender(brokers, saramaConfig, e.Destination())
 	if err != nil {
+		fmt.Println("erro ao criar o sender")
 		return err
 	}
 
@@ -42,18 +53,15 @@ func (e *Event) BuildSender() error {
 }
 
 func (e *Event) Send() error {
-	result := e.client.Send(
-		kafka_sarama.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())),
+	if result := e.client.Send(
+		kafka_sarama.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())), //.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())),
 		e.Clone(),
-	)
-
-	e.sendResult = result
-
-	if cloudevents.IsUndelivered(e.sendResult) {
+	); cloudevents.IsUndelivered(result) {
 		err := errors.New("Failed to deliver event")
 		return err
+	} else {
+		KafkaEventDelivered(e)
 	}
-	KafkaEventDelivered(e)
 	return nil
 }
 
