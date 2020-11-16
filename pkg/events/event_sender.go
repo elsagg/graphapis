@@ -36,7 +36,6 @@ func (e *Event) BuildSender() error {
 
 	sender, err := kafka_sarama.NewSender(brokers, saramaConfig, e.Destination())
 	if err != nil {
-		fmt.Println("erro ao criar o sender")
 		return err
 	}
 
@@ -54,7 +53,7 @@ func (e *Event) BuildSender() error {
 
 func (e *Event) Send() error {
 	if result := e.client.Send(
-		kafka_sarama.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())), //.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())),
+		kafka_sarama.WithMessageKey(e.ctx, sarama.StringEncoder(e.Key())),
 		e.Clone(),
 	); cloudevents.IsUndelivered(result) {
 		err := errors.New("Failed to deliver event")

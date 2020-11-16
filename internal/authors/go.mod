@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/elsagg/graphapis/pkg v0.0.0-20200928181517-f5c9b7250bfb
+	github.com/elsagg/graphapis/pkg v0.0.0-20201116221635-d91710a526bf
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/logger v0.0.2
 	github.com/gin-gonic/gin v1.6.3
@@ -14,4 +14,4 @@ require (
 	go.mongodb.org/mongo-driver v1.4.1
 )
 
-replace github.com/elsagg/graphapis/pkg => ../../pkg
+// replace github.com/elsagg/graphapis/pkg => ../../pkg
