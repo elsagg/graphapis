@@ -12,10 +12,18 @@ import (
 
 func (e *Event) BuildSender() error {
 	brokerList := os.Getenv("KAFKA_BROKERS")
+	kafkaUser := os.Getenv("KAFKA_USER")
+	kafkaPassword := os.Getenv("KAFKA_PASSWORD")
 	brokers := strings.Split(brokerList, ",")
 
 	saramaConfig := sarama.NewConfig()
 	saramaConfig.Version = sarama.V2_0_0_0
+	saramaConfig.ClientID = "sasl_scram_client"
+	saramaConfig.Net.SASL.Enable = true
+	saramaConfig.Net.SASL.Mechanism = "PLAIN"
+	saramaConfig.Net.SASL.User = kafkaUser
+	saramaConfig.Net.SASL.Password = kafkaPassword
+	saramaConfig.Net.SASL.Handshake = true
 	sender, err := kafka_sarama.NewSender(brokers, saramaConfig, e.Destination())
 	if err != nil {
 		return err
